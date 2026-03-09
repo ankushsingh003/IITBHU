@@ -28,6 +28,7 @@ class MarginRankingLossPairs(nn.Module):
                 score_i.append(scores[b, i])
                 score_j.append(scores[b, j])
                 
+               
                 if targets[b, i] < targets[b, j]:
                     y.append(-1.0)
                 elif targets[b, i] > targets[b, j]:
