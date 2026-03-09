@@ -37,7 +37,11 @@ class SherlockVideoDataset(Dataset):
             ret, frame = cap.read()
             if not ret:
                 break
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # Convert to RGB (handle grayscale or unexpected formats)
+            if frame.ndim == 2 or frame.shape[2] == 1:
+                frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
+            else:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frames.append(frame)
         cap.release()
         return np.array(frames)
