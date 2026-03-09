@@ -1,0 +1,26 @@
+# Dataset
+dataset/
+*.zip
+*.tar.gz
+*.csv
+# Keep only the sample or labels if we want, but dataset/ contains both
+!dataset/train_labels.json
+
+# PyTorch
+*.pt
+*.pth
+*.ckpt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+.env
+
+# Jupyter and IDEs
+.ipynb_checkpoints/
+.vscode/
+.idea/

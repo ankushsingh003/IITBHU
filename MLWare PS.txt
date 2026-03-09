@@ -1,0 +1,152 @@
+M L W A R E
+S h e r l o c k  F i l e s
+O V E R V I E W
+Y o u  a r e  S h e r l o c k  H o l m e s ,  t h e  w o r l d ’ s  m o s t  p e r c e p t i v e  i n v e s t i g a t o r  o f
+p a t t e r n s ,  m o t i o n ,  a n d  h i d d e n  c a u s e – e f f e c t  r e l a t i o n s h i p s .  A  p e c u l i a r  c a s e
+h a s  j u s t  a r r i v e d  a t  2 2 1 B  B a k e r  S t r e e t .  A  c o u r i e r  d e l i v e r s  a  s e a l e d  e n v e l o p e
+m a r k e d  “ E v i d e n c e  –  M o t i o n  R e c o r d s . ”  I n s i d e ,  y o u  f i n d  a  c o l l e c t i o n  o f  v i d e o
+f r a g m e n t s  r e c o v e r e d  f r o m  a  r e c e n t  c r i m e  s c e n e .  T h e  r e c o r d i n g s  a p p e a r
+o r d i n a r y  a t  f i r s t  g l a n c e — o b j e c t s  f a l l i n g ,  c o l l i d i n g ,  s l i d i n g ,  b o u n c i n g ,  a n d
+i n t e r a c t i n g  a c c o r d i n g  t o  t h e  l a w s  o f  m o t i o n .  B u t  s o m e t h i n g  i s  w r o n g .  T h e
+f i l e s  h a v e  c l e a r l y  b e e n  t a m p e r e d  w i t h .  T h e  f r a m e s  t h a t  o n c e  r e c o r d e d  e a c h
+e v e n t  i n  a  p r e c i s e  s e q u e n c e  h a v e  b e e n  s c r a m b l e d ,  l e a v i n g  o n l y  s c a t t e r e d
+m o m e n t s  f r o z e n  i n  t i m e .  W h a t  s h o u l d  h a v e  b e e n  a  c l e a r  c h a i n  o f  c a u s e  a n d
+e f f e c t  h a s  b e c o m e  a  p u z z l e  o f  d i s c o n n e c t e d  c l u e s .  E a c h  v i d e o  n o w  e x i s t s  a s
+a  s e t  o f  s h u f f l e d  f r a m e s .  S o m e w h e r e  w i t h i n  t h i s  d i s o r d e r  l i e s  t h e  t r u e
+t i m e l i n e  o f  e v e n t s .  Y o u r  t a s k  i s  t o  b u i l d  a  d e e p  l e a r n i n g  m o d e l  t h a t
+r e c o n s t r u c t s  t h e  c o r r e c t  c h r o n o l o g i c a l  o r d e r  o f  t h e s e  s h u f f l e d  f r a m e s  a n d
+r e s t o r e s  t h e  t r u e  s e q u e n c e  o f  m o t i o n .  B y  c a r e f u l l y  a n a l y z i n g  t h e  e v i d e n c e ,
+y o u  m u s t  r e c o n s t r u c t  t h e  c o r r e c t  c h r o n o l o g i c a l  o r d e r  o f  t h e  f r a m e s  a n d
+r e s t o r e  t h e  t r u e  s e q u e n c e  o f  m o t i o n . I n  S h e r l o c k ’ s  F i l e s ,  e v e r y  f r a m e  i s  a
+c l u e .  O n l y  b y  p i e c i n g  t h e m  t o g e t h e r  c a n  y o u  u n c o v e r  w h a t  r e a l l y  h a p p e n e d
+a n d  d e c o d e  t h e  d y n a m i c s  h i d d e n  w i t h i n  t h e  m o t i o n .
+S T R U C T U R E
+T h e  c o m p e t i t i o n  h a s  a  t o t a l  o f  2  r o u n d s  w h e r e  t h e  1 s t  w i l l  b e  c o n d u c t e d
+o n l i n e  w h i l e  t h e  2 n d  r o u n d  w i l l  b e  c o n d u c t e d  o f f l i n e .
+R o u n d  1  :  M O D E L  S U B M I S S I O N
+O b j e c t i v e :  P a r t i c i p a n t s  m u s t  d e v e l o p  a  f u l l y  f u n c t i o n a l  d e e p  l e a r n i n g  m o d e l
+t h a t  c a n  r e o r d e r  t h e  f r a m e s  o f  v i d e o s  i n  t h e  g i v e n  d a t a s e t .
+DATASET STRUCTURE
+The dataset consists of short video clips extracted from action videos. Each
+clip contains at most 150 frames and represents a continuous motion
+sequence.
+To create the challenge, the original videos have been intentionally
+corrupted by modifying their temporal structure. Participants are required
+to recover the correct chronological order of frames.
+The dataset is divided into two subsets:
+dataset/
+|->train/
+ |->video_0.mp4
+ |->video_1.mp4
+ |->...
+|->test/
+ |->video_5000.mp4
+ |->video_5001.mp4
+ |->...
+|->train_labels.json
+LABEL FORMAT
+The labels are provided in JSON format.
+Example:{
+ "video_0": [5, 6, 7, 8, 9, 4, 3, 2, 1, 0]
+ }
+This list specifies the order in which frames from the corrupted video must
+be selected to reconstruct the correct chronological sequence.
+Each number represents the position of a frame in the corrupted video.
+The reconstruction works as follows:
+1st frame →  take the frame at position 5
+ 2nd frame →  take the frame at position 6
+ 3rd frame →  take the frame at position 7
+ 4th frame →  take the frame at position 8
+...................
+Thus, the JSON label specifies how the frames of the corrupted video must
+be reordered to recover the true temporal sequence.
+SUBMISSION FORMAT
+Participants must submit their predictions in a CSV file with the following
+structure:
+video_id,order
+ video_5000,"5 6 7 8 9 4 3 2 1 0"
+ video_5001,"3 4 5 0 1 2"
+Each row corresponds to one test video.
+• video_id – the identifier of the test video
+ • order – a space-separated list representing the predicted frame ordering
+The numbers represent the positions of frames in the corrupted video.
+The sequence describes the order in which frames should be selected to
+reconstruct the correct chronological sequence.
+EVALUATION METRIC: KENDALL RANK CORRELATION (KENDALL’S TAU)
+Example
+Ground truth:
+ { "video_0": [2, 3, 4, 1, 0] }
+Prediction:
+ { "video_0": [2, 4, 3, 1, 0] }
+All frame pairs (10 total):
+ (2,3) (2,4) (2,1) (2,0) (3,4) (3,1) (3,0) (4,1) (4,0) (1,0)
+Comparison:
+ Correct pairs = 9  , Incorrect pairs = 1
+Kendall Tau formula:
+τ  = (C − D) / (C + D)
+where, C = number of concordant pairs,  D = number of discordant pairs
+Calculation:
+τ  = (9 − 1) / (9 + 1)
+ τ  = 8 / 10
+ τ  = 0.8
+Final leaderboard score = average Kendall Tau across all test videos.
+DATASET SIZE
+The dataset contains approximately: 5000 training videos & 100 test videos
+Each video contains between 5 and 150 frames depending on the original clip
+length.
+Final Submission:
+All files must be uploaded in a single ZIP folder containing:
+1.Model Weights
+2.Working Codebase
+3.Inference Script
+4.A one-page document explaining the rationale behind the approach
+5.requirements.txt or environment.yml for reproducibility
+Naming Format:
+TeamName_ModelRound
+Submission Process:
+Submissions will be accepted through the official Google Form.
+A separate Kaggle competition will also be hosted where participants
+must submit predictions for the test set.
+The Kaggle leaderboard will be used to track performance and
+rankings.
+Important Rules
+API calls are not allowed.
+External datasets are allowed.
+Pretrained open-source models are allowed.
+Although there is no strict limit on model size, participants are
+encouraged to design efficient and lightweight models with fast
+inference pipelines.
+We encourage participants to develop physics-aware and
+interpretable deep learning approaches that capture the underlying
+dynamics of motion in the videos. Solutions that rely purely on
+simple heuristics or frame similarity may not generalize well. Instead,
+methods that incorporate principles of temporal reasoning, physical
+consistency, and interpretable modeling are strongly encouraged.
+Teams that make a submission in Round 1 will be invited to present
+their solutions before the judging panel.
+Qualified teams must prepare and submit a presentation deck (PDF or
+PPT) describing their approach.
+The presentation should cover the following components:
+1. Problem Understanding
+2. Model Architecture and Methodology
+3. Feature Engineering and Data Processing
+4. Evaluation Strategy
+5. Results and Insights
+Presentation Format:
+Each team will be given:
+10 minutes for presentation
+5 minutes for questions from the judges
+Presentations will be conducted in offline mode 
+Marking Scheme :
+Evaluation will be based on the following criteria:
+1. Innovation - 20%
+2. Accuracy (Kendall Score) - 30%
+3. Model Efficiency / Size - 20%
+4. Code & Report Clarity - 10%
+5. Presentation - 20 %
+Kaggle competition link ( Includes the dataset ) -
+https://www.kaggle.com/competitions/ml-ware-26-sherlock-files
+Whatsapp Group Link - 
+https://chat.whatsapp.com/LdYunj3VbUx3zobedB1NxJ?mode=gi_t Join
+the participants group
+Round 2 : MODEL PRESENTATION
