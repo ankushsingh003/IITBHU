@@ -1,3 +1,4 @@
+import argparse
 import os
 import torch
 import pandas as pd
@@ -8,7 +9,7 @@ from tqdm import tqdm
 from dataset import SherlockVideoDataset
 from model import FrameReorderingModel
 
-def generate_submission(model_path="best_model.pth", data_dir="../dataset/test", output_csv="submission.csv"):
+def generate_submission(model_path="best_model.pth", data_dir="dataset/test", output_csv="submission.csv"):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device} for inference")
 
@@ -60,4 +61,15 @@ def generate_submission(model_path="best_model.pth", data_dir="../dataset/test",
     print(f"Saved submission to {output_csv}")
 
 if __name__ == "__main__":
-    generate_submission()
+    parser = argparse.ArgumentParser(description='Inference for Sherlock Frame Reordering Model')
+    parser.add_argument('--model_path', type=str, default='best_model.pth', help='Path to model weights')
+    parser.add_argument('--data_dir', type=str, default='dataset/test', help='Test data directory')
+    parser.add_argument('--output_csv', type=str, default='submission.csv', help='Output CSV file')
+    
+    args = parser.parse_args()
+    
+    generate_submission(
+        model_path=args.model_path,
+        data_dir=args.data_dir,
+        output_csv=args.output_csv
+    )

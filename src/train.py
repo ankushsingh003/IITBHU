@@ -1,3 +1,4 @@
+import argparse
 import os
 import torch
 import torch.optim as optim
@@ -9,7 +10,7 @@ from dataset import SherlockVideoDataset
 from model import FrameReorderingModel
 from loss import MarginRankingLossPairs, calculate_kendall_tau
 
-def train(epochs=10, batch_size=4, lr=1e-4, data_dir='../dataset/train', labels_file='../dataset/train_labels.json'):
+def train(epochs=10, batch_size=4, lr=1e-4, data_dir='dataset/train', labels_file='dataset/train_labels.json'):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
 
