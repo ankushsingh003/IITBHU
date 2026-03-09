@@ -27,24 +27,17 @@ class SherlockVideoDataset(Dataset):
         return len(self.video_files)
     
     def extract_frames(self, video_path):
-        """
-        Extract frames from a video using OpenCV.
-        Returns a numpy array of shape (num_frames, H, W, C) in RGB.
-        """
         cap = cv2.VideoCapture(video_path)
         frames = []
         while True:
             ret, frame = cap.read()
             if not ret:
                 break
-            # Convert to RGB (handle grayscale or unexpected formats)
-            if frame.ndim == 2 or frame.shape[2] == 1:
-                frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
-            else:
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # Force RGB conversion using cv2 but we will double check later
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frames.append(frame)
         cap.release()
-        return np.array(frames)
+        return frames
 
     def __getitem__(self, idx):
         video_filename = self.video_files[idx]
@@ -53,16 +46,29 @@ class SherlockVideoDataset(Dataset):
         
         frames = self.extract_frames(video_path)
         
+        from PIL import Image
         frame_tensors = []
-        for frame in frames:
+        for i, frame in enumerate(frames):
+            # Ensure each frame is specifically RGB
+            img = Image.fromarray(frame).convert('RGB')
             if self.transform:
-                frame = self.transform(frame)
-            frame_tensors.append(frame)
+                img = self.transform(img)
+            else:
+                # Default if no transform
+                img = torch.tensor(np.array(img)).permute(2, 0, 1).float() / 255.0
+            frame_tensors.append(img)
             
-        if len(frame_tensors) > 0 and isinstance(frame_tensors[0], torch.Tensor):
-            frame_tensors = torch.stack(frame_tensors)
+        if len(frame_tensors) > 0:
+            try:
+                frame_tensors = torch.stack(frame_tensors)
+            except RuntimeError as e:
+                print(f"Error stacking frames for video {video_id}: {e}")
+                # Print individual frame shapes for debugging
+                for j, ft in enumerate(frame_tensors):
+                    print(f"  Frame {j} shape: {ft.shape}")
+                raise e
         else:
-            frame_tensors = torch.tensor(np.array(frames)).permute(0, 3, 1, 2).float() / 255.0
+            frame_tensors = torch.empty(0)
 
         if self.is_train:
             target_order = self.labels.get(video_id, [])
